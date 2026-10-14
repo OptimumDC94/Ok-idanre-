@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" />
+      <stop offset="100%" stop-color="#022c22" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded squircle with safe margin -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Inner border ring -->
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="none" stroke="#047857" stroke-width="6" stroke-opacity="0.5" />
+
+  <!-- Sunrise / Golden rays behind hills -->
+  <circle cx="256" cy="220" r="88" fill="url(#goldGrad)" opacity="0.9" />
+
+  <!-- Stylized Oke Idanre Hills (inselberg peak) -->
+  <path d="M120 370 L210 200 Q240 160 260 170 L340 370 Z" fill="#047857" />
+  <path d="M220 370 L290 140 Q315 110 340 130 L430 370 Z" fill="#065f46" opacity="0.95" />
+  <path d="M70 370 L160 240 Q180 215 200 230 L290 370 Z" fill="#024731" opacity="0.85" />
+
+  <!-- 682 Historic steps ascending -->
+  <path d="M210 370 L225 350 L240 330 L255 310 L270 290 L285 270" stroke="#fef3c7" stroke-width="8" stroke-linecap="round" stroke-dasharray="8 8" />
+
+  <!-- Bottom banner badge: IDANAPP -->
+  <rect x="86" y="380" width="340" height="72" rx="20" fill="url(#goldGrad)" />
+  <text x="256" y="428" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="900" fill="#064e3b" text-anchor="middle" letter-spacing="4">IDANAPP</text>
+</svg>

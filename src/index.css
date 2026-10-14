@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+/* Custom smooth styling */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
+}
+
+/* Hide scrollbar for clean horizontal chips */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Ambient glow & hill contour keyframes */
+@keyframes ambientGlow1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translate(30px, -20px) scale(1.15);
+    opacity: 0.85;
+  }
+}
+
+@keyframes ambientGlow2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(-35px, 25px) scale(1.12);
+    opacity: 0.8;
+  }
+}
+
+@keyframes hillPulse {
+  0%, 100% {
+    opacity: 0.08;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.14;
+    transform: scale(1.02);
+  }
+}
+
+.animate-ambient-1 {
+  animation: ambientGlow1 12s ease-in-out infinite;
+}
+
+.animate-ambient-2 {
+  animation: ambientGlow2 16s ease-in-out infinite;
+}
+
+.animate-hill-pulse {
+  animation: hillPulse 10s ease-in-out infinite;
+}
+
+/* Topographic elevation lines background SVG pattern */
+.bg-topo-pattern {
+  background-image: radial-gradient(circle at 50% 0%, currentColor 1px, transparent 1px);
+  background-size: 24px 24px;
+}

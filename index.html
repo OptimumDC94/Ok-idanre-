@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Virtual Idanre — Modern Community Platform</title>
+    <script>
+      // Suppress Vite HMR WebSocket errors in iframe/preview sandbox environments
+      (function() {
+        if (typeof window === 'undefined') return;
+
+        var NativeWebSocket = window.WebSocket;
+
+        function isViteHmr(url, protocols) {
+          if (protocols === 'vite-hmr') return true;
+          if (Array.isArray(protocols) && protocols.indexOf('vite-hmr') !== -1) return true;
+          var urlStr = String(url || '');
+          if (urlStr.indexOf('vite-hmr') !== -1 || urlStr.indexOf('/@vite/client') !== -1 || urlStr.indexOf('token=') !== -1) return true;
+          return false;
+        }
+
+        function createMockHmrSocket(url) {
+          var listeners = {};
+          var socket = {
+            url: url,
+            protocol: 'vite-hmr',
+            readyState: 1, // OPEN
+            bufferedAmount: 0,
+            extensions: '',
+            binaryType: 'blob',
+            onopen: null,
+            onclose: null,
+            onmessage: null,
+            onerror: null,
+            CONNECTING: 0,
+            OPEN: 1,
+            CLOSING: 2,
+            CLOSED: 3,
+            send: function() {},
+            close: function() {
+              socket.readyState = 3;
+            },
+            addEventListener: function(type, listener) {
+              if (!listeners[type]) listeners[type] = [];
+              listeners[type].push(listener);
+              if (type === 'open') {
+                setTimeout(function() {
+                  try {
+                    var ev = new Event('open');
+                    if (typeof socket.onopen === 'function') socket.onopen(ev);
+                    if (typeof listener === 'function') listener(ev);
+                  } catch (e) {}
+                }, 0);
+              }
+            },
+            removeEventListener: function(type, listener) {
+              if (!listeners[type]) return;
+              var idx = listeners[type].indexOf(listener);
+              if (idx !== -1) listeners[type].splice(idx, 1);
+            },
+            dispatchEvent: function(event) {
+              var list = listeners[event.type] || [];
+              for (var i = 0; i < list.length; i++) {
+                try { list[i](event); } catch (e) {}
+              }
+              return true;
+            }
+          };
+
+          if (NativeWebSocket && NativeWebSocket.prototype) {
+            try {
+              Object.setPrototypeOf(socket, NativeWebSocket.prototype);
+            } catch (e) {}
+          }
+
+          setTimeout(function() {
+            try {
+              var ev = new Event('open');
+              if (typeof socket.onopen === 'function') socket.onopen(ev);
+            } catch (e) {}
+          }, 0);
+
+          return socket;
+        }
+
+        window.WebSocket = function(url, protocols) {
+          if (isViteHmr(url, protocols)) {
+            return createMockHmrSocket(url);
+          }
+          if (NativeWebSocket) {
+            return new NativeWebSocket(url, protocols);
+          }
+          return createMockHmrSocket(url);
+        };
+
+        if (NativeWebSocket) {
+          window.WebSocket.prototype = NativeWebSocket.prototype;
+          window.WebSocket.CONNECTING = NativeWebSocket.CONNECTING;
+          window.WebSocket.OPEN = NativeWebSocket.OPEN;
+          window.WebSocket.CLOSING = NativeWebSocket.CLOSING;
+          window.WebSocket.CLOSED = NativeWebSocket.CLOSED;
+        } else {
+          window.WebSocket.CONNECTING = 0;
+          window.WebSocket.OPEN = 1;
+          window.WebSocket.CLOSING = 2;
+          window.WebSocket.CLOSED = 3;
+        }
+
+        var origConsoleError = console.error;
+        var origConsoleWarn = console.warn;
+
+        var isWsError = function(arg) {
+          if (!arg) return false;
+          var str = String(arg.message || arg.stack || arg.reason || arg);
+          return (
+            str.indexOf('WebSocket closed without opened') !== -1 ||
+            str.indexOf('closed without opened') !== -1 ||
+            (str.indexOf('[vite]') !== -1 && (str.indexOf('WebSocket') !== -1 || str.indexOf('ws') !== -1 || str.indexOf('connection lost') !== -1))
+          );
+        };
+
+        console.error = function() {
+          for (var i = 0; i < arguments.length; i++) {
+            if (isWsError(arguments[i])) {
+              return;
+            }
+          }
+          return origConsoleError.apply(console, arguments);
+        };
+
+        console.warn = function() {
+          for (var i = 0; i < arguments.length; i++) {
+            if (isWsError(arguments[i])) {
+              return;
+            }
+          }
+          return origConsoleWarn.apply(console, arguments);
+        };
+
+        window.onerror = function(message, source, lineno, colno, error) {
+          if (isWsError(message) || isWsError(error)) {
+            return true;
+          }
+          return false;
+        };
+
+        window.addEventListener('unhandledrejection', function(event) {
+          if (event && isWsError(event.reason)) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+          }
+        }, true);
+
+        window.addEventListener('error', function(event) {
+          if (event && (isWsError(event.message) || isWsError(event.error))) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+      })();
+    </script>
+    <meta name="description" content="Virtual Idanre: A modern community platform uniting secondary school students, youth, and elders across Idanre towns and streets for education, marketplace trading, heritage preservation, dating & meetups, and Gemini AI assistance." />
+    <meta name="theme-color" content="#064e3b" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="VirtualIdanre" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta property="og:title" content="Virtual Idanre — Modern Community Platform" />
+    <meta property="og:description" content="Virtual Idanre: A modern community platform uniting secondary school students, youth, and elders across Idanre towns and streets for education, marketplace trading, heritage preservation, dating & meetups, and Gemini AI assistance." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-stone-50 text-stone-900 antialiased selection:bg-emerald-700 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

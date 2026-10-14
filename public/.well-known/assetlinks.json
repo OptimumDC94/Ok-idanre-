@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.okidanre.idanapp",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:7D:0C:52:97:AE:CE:E5:B6:12:37:4E:0E:03:97:94:0A:78:E0:4F:92:28:B6:AE:34:6A:B9:4E:94:98"
+      ]
+    }
+  }
+]

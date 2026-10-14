@@ -1,0 +1,6 @@
+{
+  "name": "Virtual Idanre — Modern Community Platform",
+  "description": "A modern, vibrant community platform uniting secondary school students, youth, and elders across Idanre towns and streets for education, marketplace trading, heritage preservation, dating & meetups, and Gemini AI assistance.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
